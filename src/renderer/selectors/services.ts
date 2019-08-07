@@ -4,7 +4,7 @@ import { ServiceAst } from 'thriftrw';
 import { getMethodDefaultRequest } from '../utils/defaultRequest';
 import { getMethodJsonSchema } from '../utils/getMethodJsonSchema';
 import { selectedMethodSelector } from './editor';
-import { LoadingState } from '../utils/loading-state';
+import { LoadingState } from '../utils/loadingState';
 
 export const servicesStateSelector = (state: RootState) => state.services;
 

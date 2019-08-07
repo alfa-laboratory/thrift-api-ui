@@ -66,6 +66,23 @@ const createWindow = async () => {
                     type: 'separator'
                 },
                 {
+                    label: 'Hide Thrift API UI',
+                    accelerator: 'CmdOrCtrl+H',
+                    role: 'hide'
+                },
+                {
+                    label: 'Hide Others',
+                    accelerator: 'CmdOrCtrl+Shift+H',
+                    role: 'hideOtherApplications'
+                },
+                {
+                    label: 'Show All',
+                    role: 'unhideAllApplications'
+                },
+                {
+                    type: 'separator'
+                },
+                {
                     label: 'Quit',
                     accelerator: 'CmdOrCtrl+Q',
                     click() {

@@ -3,7 +3,7 @@ import IconPaymentPlus from 'arui-feather/icon/banking/payment-plus';
 import { EditorTabItem } from './EditorTabItem';
 import styled from 'styled-components';
 import { ipcRenderer } from 'electron';
-import { showSettings } from '../actions/settings';
+import { useOnMount } from '../utils/useOnMount';
 
 type Props = {
     tabs: { id: string; name: string; }[];
@@ -35,7 +35,7 @@ const TabPlusButton = styled.button`
 `;
 
 export const EditorTabs = (props: Props) => {
-    React.useEffect(() => {
+    useOnMount(() => {
         ipcRenderer.on('newTab', () => {
             props.onCreateTab();
         });
@@ -47,7 +47,7 @@ export const EditorTabs = (props: Props) => {
             ipcRenderer.removeAllListeners('newTab');
             ipcRenderer.removeAllListeners('closeTab');
         }
-    }, []);
+    });
 
     return (
         <StyledEditorTabs className={ props.className }>

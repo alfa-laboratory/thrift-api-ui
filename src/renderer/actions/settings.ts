@@ -1,6 +1,6 @@
 import { ParsedService, ProgramAst } from 'thriftrw';
 import { remote } from 'electron';
-import { ActionsUnion, AppThunkAction } from '../utils/create-action';
+import { ActionsUnion, AppThunkAction } from '../utils/actionsUnion';
 import { parseAllThriftFilesFromDirectory } from '../thrift/parseAllThriftFilesFromDirectory';
 import { endpointSelector, selectedMethodSelector } from '../selectors/editor';
 import { stringIsAValidUrl } from '../utils/isValidUrl';

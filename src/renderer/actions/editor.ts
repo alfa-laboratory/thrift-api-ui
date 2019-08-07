@@ -1,5 +1,5 @@
-import { ActionsUnion } from '../utils/create-action';
-import { Dispatch } from 'redux';
+import { ActionsUnion } from '../utils/actionsUnion';
+import { ThunkDispatch } from 'redux-thunk';
 import { RootState } from '../reducers';
 import { performRequest } from '../thrift/performRequest';
 import { activeTabIdSelector, endpointSelector, requestSelector, selectedMethodSelector } from '../selectors/editor';
@@ -9,6 +9,7 @@ import {
 } from '../selectors/services';
 import { requestProxySelector, requestTimeoutSelector } from '../selectors/settings';
 import { saveEndpointHistory } from './settings';
+import { savedEntriesSelector } from '../selectors/savedRequests';
 
 export const CREATE_TAB = '@editor/createTab';
 export const CLOSE_TAB = '@editor/closeTab';
@@ -85,7 +86,7 @@ export type EditorActions = ActionsUnion<typeof editorAC>;
 export const selectTab = editorAC.selectTab;
 export const createTab = editorAC.createTab;
 export function closeTab(tabId?: string) {
-    return (dispatch: Dispatch, getState: () => RootState) => {
+    return (dispatch: ThunkDispatch<RootState, {}, any>, getState: () => RootState) => {
         if (!tabId) {
             // tslint:disable-next-line:no-parameter-reassignment
             tabId = activeTabIdSelector(getState());
@@ -96,7 +97,7 @@ export function closeTab(tabId?: string) {
 }
 
 export function selectServiceAndMethod(serviceName: string, methodName: string) {
-    return (dispatch: Dispatch, getState: () => RootState) => {
+    return (dispatch: ThunkDispatch<RootState, {}, any>, getState: () => RootState) => {
         dispatch(editorAC.selectServiceAndMethod(serviceName, methodName));
         const state = getState();
         const defaultRequest = methodDefaultRequestSelector(state, serviceName, methodName);
@@ -113,7 +114,7 @@ export const setEndpoint = editorAC.setEndpoint;
 export const setRequest = editorAC.setRequest;
 
 export function submitRequest() {
-    return async (dispatch: Dispatch, getState: () => RootState) => {
+    return async (dispatch: ThunkDispatch<RootState, {}, any>, getState: () => RootState) => {
         const state = getState();
         const method = selectedMethodSelector(state);
         const requestMessage = requestSelector(state);
@@ -143,5 +144,21 @@ export function submitRequest() {
         } catch (error) {
             dispatch(editorAC.submitRequestError(error));
         }
+    }
+}
+
+export function loadSavedRequest(id: string) {
+    return (dispatch: ThunkDispatch<RootState, {}, any>, getState: () => RootState) => {
+        const state = getState();
+        const entry = savedEntriesSelector(state)[id];
+
+        if (!entry) {
+            return;
+        }
+
+        dispatch(editorAC.createTab());
+        dispatch(editorAC.setEndpoint(entry.endpoint));
+        dispatch(editorAC.selectServiceAndMethod(entry.serviceName, entry.methodName));
+        dispatch(editorAC.setRequest(entry.request));
     }
 }

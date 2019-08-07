@@ -1,6 +1,6 @@
 import React from 'react';
 import MonacoEditor from 'react-monaco-editor';
-import { LoadingState } from '../utils/loading-state';
+import { LoadingState } from '../utils/loadingState';
 import Spin from 'arui-feather/spin';
 import styled from 'styled-components';
 

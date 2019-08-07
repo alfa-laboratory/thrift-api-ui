@@ -2,6 +2,7 @@ import React from 'react';
 import Button from 'arui-feather/button';
 import styled from 'styled-components';
 import InputAutocomplete from 'arui-feather/input-autocomplete';
+import { SaveRequestButton } from './SaveRequestButton';
 
 type Props = {
     endpoint: string;
@@ -9,11 +10,18 @@ type Props = {
     onEndpointChange: (value: string) => void;
     onEndpointEditFinished: () => void;
     onSubmit: () => void;
+    onSave: (name: string) => void;
     className?: string;
 };
 
 const UrlBlock = styled.div`
     display: flex;
+    align-items: center;
+    padding: 10px;
+`;
+
+const StyledButton = styled(Button)`
+    margin-left: 10px;
 `;
 
 function filterEndpoints(inputValue: string, options: string[]) {
@@ -32,10 +40,14 @@ export const EndpointEditor = (props: Props) => (
             onChange={ props.onEndpointChange }
             onBlur={ props.onEndpointEditFinished }
         />
-        <Button
+        <StyledButton
             text='Send'
             size='l'
+            view='extra'
             onClick={ props.onSubmit }
+        />
+        <SaveRequestButton
+            onSave={ props.onSave }
         />
     </UrlBlock>
 );

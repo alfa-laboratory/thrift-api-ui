@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import { AppContainer } from 'react-hot-loader';
 import { Application } from './containers/Application';
 import { store, persistor } from './store';
-import './app.css';
 import { PersistGate } from 'redux-persist/integration/react';
+import './app.css';
 
 // Create main element
 const mainElement = document.createElement('div');

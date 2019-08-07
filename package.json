@@ -93,6 +93,7 @@
     "@types/react-test-renderer": "^16.8.1",
     "@types/request-promise-native": "^1.0.16",
     "@types/styled-components": "^4.1.16",
+    "@types/uuid": "^3.4.5",
     "@types/webdriverio": "^4.8.7",
     "@types/webpack-env": "^1.13.3",
     "babel-loader": "^8.0.6",
@@ -146,7 +147,8 @@
     "request-promise-native": "^1.0.7",
     "reselect": "^4.0.0",
     "styled-components": "^4.3.2",
-    "thriftrw": "^3.11.3"
+    "thriftrw": "^3.11.3",
+    "uuid": "^3.3.2"
   },
   "homepage": "https://github.com/alfa-laboratory/"
 }

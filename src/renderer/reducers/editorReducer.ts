@@ -1,4 +1,4 @@
-import { LoadingState } from '../utils/loading-state';
+import { LoadingState } from '../utils/loadingState';
 import {
     EditorActions,
     CREATE_TAB,

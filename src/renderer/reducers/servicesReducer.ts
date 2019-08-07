@@ -5,7 +5,7 @@ import {
     SET_THRIFT_SOURCE_PATH_ERROR,
     SET_THRIFT_SOURCE_PATH_SUCCESS
 } from '../actions/settings';
-import { LoadingState } from '../utils/loading-state';
+import { LoadingState } from '../utils/loadingState';
 
 export type ServicesState = {
     services: Record<string, ParsedService>;

@@ -1,74 +1,83 @@
 import React from 'react';
-import Menu from 'arui-feather/menu';
 import Input from 'arui-feather/input';
-import Heading from 'arui-feather/heading';
+import styled from 'styled-components';
+import { ServicesMethods } from './ServicesMethods';
+import { SavedRequestEntry } from '../utils/savedRequests';
+import { SavedRequests } from './SavedRequests';
+import { EditorTabItem } from './EditorTabItem';
 
 type Props = {
     services: Record<string, string[]>;
+    savedRequests: SavedRequestEntry[];
     onMethodSelect: (serviceName: string, methodName: string) => void;
+    onSavedEntrySelect: (id: string) => void;
+    onSavedEntryDelete: (id: string) => void;
     className?: string;
 };
 
+const FilterInputContainer = styled.div`
+    padding: 10px;
+`;
+
+const TabsContainer = styled.div`
+    border-bottom: 1px solid #e6e6e6;
+    border-top: 1px solid #e6e6e6;
+`;
+
 export const MethodsFilter = React.memo((props: Props) => {
     const [searchString, setSearchString] = React.useState('');
-    const loweredSearchString = searchString.toLocaleLowerCase();
+    const [activeTab, setActiveTab] = React.useState<'saved' | 'methods'>('methods');
 
-    const serviceToMenuContent = (serviceName: string) => ({
-        type: 'group' as const,
-        title: serviceName,
-        content: props.services[serviceName]
-            .filter((methodName) => {
-                if (!searchString) {
-                    return true;
-                }
-
-                return (
-                    methodName.toLocaleLowerCase().includes(loweredSearchString) ||
-                    serviceName.toLocaleLowerCase().includes(loweredSearchString)
-                );
-            })
-            .map(methodName => ({
-                type: 'item',
-                content: methodName,
-                value: `${serviceName}/${methodName}`,
-                props: {
-                    url: `${serviceName}/${methodName}`,
-                    onClick: (event: MouseEvent) => {
-                        event.preventDefault();
-                        props.onMethodSelect(serviceName, methodName);
-                    }
-                }
-            }))
-    });
-    const menuContent = Object.keys(props.services)
-        .filter((serviceName) => {
-            if (!searchString) {
-                return true;
-            }
-
-            return serviceName.toLocaleLowerCase().includes(loweredSearchString) ||
-                props.services[serviceName]
-                    .some(methodName => methodName.toLocaleLowerCase().includes(loweredSearchString));
-        })
-        .map(serviceToMenuContent);
+    const selectSavedTab = React.useCallback(() => {
+        setActiveTab('saved');
+    }, []);
+    const selectMethodsTab = React.useCallback(() => {
+        setActiveTab('methods');
+    }, []);
 
     return (
         <div className={ props.className }>
-            <Input
-                value={ searchString }
-                onChange={ setSearchString }
-                width='available'
-                view='filled'
-                label='Find method'
-            />
-            { menuContent.length === 0 && (
-                <Heading size='xs'>
-                    Nothing matched
-                </Heading>
+            <FilterInputContainer>
+                <Input
+                    value={ searchString }
+                    onChange={ setSearchString }
+                    width='available'
+                    view='filled'
+                    label='Filter'
+                />
+            </FilterInputContainer>
+            <TabsContainer>
+                <EditorTabItem
+                    name='methods'
+                    id='methods'
+                    isActive={ activeTab === 'methods' }
+                    onClick={ selectMethodsTab }
+                    hideCloseButton={ true }
+                />
+                <EditorTabItem
+                    name='Saved'
+                    id='saved'
+                    isActive={ activeTab === 'saved' }
+                    onClick={ selectSavedTab }
+                    hideCloseButton={ true }
+                />
+            </TabsContainer>
+
+            { activeTab === 'saved' && (
+                <SavedRequests
+                    searchString={ searchString }
+                    savedRequests={ props.savedRequests }
+                    onSavedEntryDelete={ props.onSavedEntryDelete }
+                    onSavedEntrySelect={ props.onSavedEntrySelect }
+                />
             ) }
-            <Menu
-                content={ menuContent }
-            />
+            { activeTab === 'methods' && (
+                <ServicesMethods
+                    searchString={ searchString }
+                    services={ props.services }
+                    onMethodSelect={ props.onMethodSelect }
+                />
+            ) }
         </div>
     );
 });

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import IconClose from 'arui-feather/icon/ui/close';
 import IconButton from 'arui-feather/icon-button';
+import { useCreatePortalInBody } from '../utils/useCreatePortalInBody';
 
 type Props = {
     isVisible: boolean;
@@ -44,16 +45,20 @@ const StyledIconButton = styled(IconButton)`
     right: 2px;
 `;
 
-export const Modal = (props: Props) => (
-    <Backdrop className={ props.backdropClassName } isVisible={ props.isVisible }>
-        <StyledModal className={ props.className }>
-            <StyledIconButton
-                onClick={ props.isClosable ? props.onClose : undefined }
-                disabled={ !props.isClosable }
-            >
-                <IconClose />
-            </StyledIconButton>
-            { props.children }
-        </StyledModal>
-    </Backdrop>
-);
+export const Modal = (props: Props) => {
+    const createBodyPortal = useCreatePortalInBody();
+
+    return createBodyPortal(
+        <Backdrop className={ props.backdropClassName } isVisible={ props.isVisible }>
+            <StyledModal className={ props.className }>
+                <StyledIconButton
+                    onClick={ props.isClosable ? props.onClose : undefined }
+                    disabled={ !props.isClosable }
+                >
+                    <IconClose />
+                </StyledIconButton>
+                { props.children }
+            </StyledModal>
+        </Backdrop>
+    );
+};

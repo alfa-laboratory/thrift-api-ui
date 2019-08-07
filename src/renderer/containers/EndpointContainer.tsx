@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as editorActions from '../actions/editor';
 import * as settingsActions from '../actions/settings';
+import * as savedRequestsActions from '../actions/savedRequests';
 import { EndpointEditor } from '../components/EndpointEditor';
 import { RootState } from '../reducers';
 import { bindActionCreators, Dispatch } from 'redux';
@@ -19,6 +20,7 @@ function mapDispatchToProps(dispatch: Dispatch) {
     return bindActionCreators({
         onEndpointChange: editorActions.setEndpoint,
         onSubmit: editorActions.submitRequest,
+        onSave: savedRequestsActions.saveRequest,
         onEndpointEditFinished: settingsActions.onEndpointEditFinished
     }, dispatch);
 }

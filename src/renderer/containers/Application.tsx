@@ -9,6 +9,7 @@ import { SettingsContainer } from './SettingsContainer';
 import { isThriftParsedSelector, isThriftParsingInProgressSelector } from '../selectors/services';
 import { AppLoader } from '../components/AppLoader';
 import { EmptyAppPlaceholder } from '../components/EmptyAppPlaceholder';
+import { useOnMount } from '../utils/useOnMount';
 
 export const Application = hot(() => {
     const dispatch = useDispatch();
@@ -16,17 +17,15 @@ export const Application = hot(() => {
     const isThriftLoaded = useSelector(isThriftParsedSelector);
     const isThriftLoading = useSelector(isThriftParsingInProgressSelector);
 
-    React.useEffect(() => {
+    useOnMount(() => {
         if (thriftSrcPath) {
             dispatch(setThriftSource(thriftSrcPath));
         }
-    }, []);
 
-    React.useEffect(() => {
         ipcRenderer.on('showSettings', () => {
             dispatch(showSettings());
         });
-    }, []);
+    });
 
     function handleChoose() {
         dispatch(showSelectThriftPathDialog());

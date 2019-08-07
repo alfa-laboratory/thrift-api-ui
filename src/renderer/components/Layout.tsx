@@ -11,12 +11,12 @@ const StyledLayout = styled.div`
     height: 100%;
     display: grid;
     grid-template-areas:
-        "tabs tabs"
+        "browser tabs"
         "browser endpoint"
         "browser request"
         "browser response";
-    grid-template-columns: 250px minmax(0, 1fr);
-    grid-template-rows: 40px 60px 1fr 2fr;
+    grid-template-columns: 290px minmax(0, 1fr);
+    grid-template-rows: 40px 80px 1fr 2fr;
 `;
 
 const StyledBrowser = styled(MethodsFilterContainer)`

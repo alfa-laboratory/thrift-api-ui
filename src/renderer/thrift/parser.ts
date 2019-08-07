@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import PatchedThrift from './patched-thrift';
+import PatchedThrift from './patchedThrift';
 
 // thriftrw пытается считать файлы в ascii кодировке. У нас они в utf8.
 const patchedFs = {

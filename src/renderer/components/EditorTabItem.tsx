@@ -2,16 +2,27 @@ import React from 'react';
 import styled from 'styled-components';
 import IconClose from 'arui-feather/icon/ui/close';
 
-type Props = {
+type BaseProps = {
     name: string;
     id: string;
     isActive: boolean;
     onClick: (id: string) => void;
-    onCloseClick: (id: string) => void;
     className?: string;
 };
 
+type ClosableProps = {
+    hideCloseButton?: false;
+    onCloseClick: (id: string) => void;
+};
+
+type NotClosableProps = {
+    hideCloseButton: true;
+};
+
+type Props = BaseProps & (ClosableProps | NotClosableProps);
+
 type StyledButtonProps = { isActive: boolean; };
+
 const StyledButton = styled.div<StyledButtonProps>`
     border: 0;
     border-right: 1px solid #e6e6e6;
@@ -54,7 +65,9 @@ export const EditorTabItem = (props: Props) => {
 
     function handleCloseClick(event: React.MouseEvent) {
         event.stopPropagation();
-        props.onCloseClick(props.id);
+        if (props.hideCloseButton !== true) {
+            props.onCloseClick(props.id);
+        }
     }
 
     return (
@@ -65,9 +78,11 @@ export const EditorTabItem = (props: Props) => {
             isActive={ props.isActive }
         >
             { props.name }
-            <CloseButton onClick={ handleCloseClick }>
-                <IconClose size='xs' />
-            </CloseButton>
+            { props.hideCloseButton !== true && (
+                <CloseButton onClick={ handleCloseClick }>
+                    <IconClose size='xs' />
+                </CloseButton>
+            ) }
         </StyledButton>
     );
 };

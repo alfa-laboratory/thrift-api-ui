@@ -17,7 +17,7 @@ function configureStore(initialState?: RootState) {
     const persistedReducer = persistReducer({
         storage,
         key: 'persisted-app',
-        whitelist: ['settings']
+        whitelist: ['settings', 'savedRequests', 'editor']
     }, reducers);
 
     const store = createStore(persistedReducer, initialState, enhancer);

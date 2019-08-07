@@ -24,6 +24,17 @@ const TabsContainer = styled.div`
     border-top: 1px solid #e6e6e6;
 `;
 
+const filterAndTabsHeight = '120px';
+
+const FilterAndTabsContainer = styled.div`
+    height: ${filterAndTabsHeight};
+`;
+
+const TabContainer = styled.div`
+    height: calc(100% - ${filterAndTabsHeight});
+    overflow: scroll;
+`;
+
 export const MethodsFilter = React.memo((props: Props) => {
     const [searchString, setSearchString] = React.useState('');
     const [activeTab, setActiveTab] = React.useState<'saved' | 'methods'>('methods');
@@ -37,47 +48,51 @@ export const MethodsFilter = React.memo((props: Props) => {
 
     return (
         <div className={ props.className }>
-            <FilterInputContainer>
-                <Input
-                    value={ searchString }
-                    onChange={ setSearchString }
-                    width='available'
-                    view='filled'
-                    label='Filter'
-                />
-            </FilterInputContainer>
-            <TabsContainer>
-                <EditorTabItem
-                    name='methods'
-                    id='methods'
-                    isActive={ activeTab === 'methods' }
-                    onClick={ selectMethodsTab }
-                    hideCloseButton={ true }
-                />
-                <EditorTabItem
-                    name='Saved'
-                    id='saved'
-                    isActive={ activeTab === 'saved' }
-                    onClick={ selectSavedTab }
-                    hideCloseButton={ true }
-                />
-            </TabsContainer>
+            <FilterAndTabsContainer>
+                <FilterInputContainer>
+                    <Input
+                        value={ searchString }
+                        onChange={ setSearchString }
+                        width='available'
+                        view='filled'
+                        label='Filter'
+                    />
+                </FilterInputContainer>
+                <TabsContainer>
+                    <EditorTabItem
+                        name='methods'
+                        id='methods'
+                        isActive={ activeTab === 'methods' }
+                        onClick={ selectMethodsTab }
+                        hideCloseButton={ true }
+                    />
+                    <EditorTabItem
+                        name='Saved'
+                        id='saved'
+                        isActive={ activeTab === 'saved' }
+                        onClick={ selectSavedTab }
+                        hideCloseButton={ true }
+                    />
+                </TabsContainer>
+            </FilterAndTabsContainer>
 
-            { activeTab === 'saved' && (
-                <SavedRequests
-                    searchString={ searchString }
-                    savedRequests={ props.savedRequests }
-                    onSavedEntryDelete={ props.onSavedEntryDelete }
-                    onSavedEntrySelect={ props.onSavedEntrySelect }
-                />
-            ) }
-            { activeTab === 'methods' && (
-                <ServicesMethods
-                    searchString={ searchString }
-                    services={ props.services }
-                    onMethodSelect={ props.onMethodSelect }
-                />
-            ) }
+            <TabContainer>
+                { activeTab === 'saved' && (
+                    <SavedRequests
+                        searchString={ searchString }
+                        savedRequests={ props.savedRequests }
+                        onSavedEntryDelete={ props.onSavedEntryDelete }
+                        onSavedEntrySelect={ props.onSavedEntrySelect }
+                    />
+                ) }
+                { activeTab === 'methods' && (
+                    <ServicesMethods
+                        searchString={ searchString }
+                        services={ props.services }
+                        onMethodSelect={ props.onMethodSelect }
+                    />
+                ) }
+            </TabContainer>
         </div>
     );
 });

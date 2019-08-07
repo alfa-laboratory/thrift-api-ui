@@ -1,7 +1,7 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import { ipcRenderer } from 'electron';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { Layout } from '../components/Layout';
 import { setThriftSource, showSelectThriftPathDialog, showSettings } from '../actions/settings';
 import { thriftSrcPathSelector } from '../selectors/settings';
@@ -10,9 +10,11 @@ import { isThriftParsedSelector, isThriftParsingInProgressSelector } from '../se
 import { AppLoader } from '../components/AppLoader';
 import { EmptyAppPlaceholder } from '../components/EmptyAppPlaceholder';
 import { useOnMount } from '../utils/useOnMount';
+import { submitRequest } from '../actions/editor';
 
 export const Application = hot(() => {
     const dispatch = useDispatch();
+    const getState = useStore().getState;
     const thriftSrcPath = useSelector(thriftSrcPathSelector);
     const isThriftLoaded = useSelector(isThriftParsedSelector);
     const isThriftLoading = useSelector(isThriftParsingInProgressSelector);
@@ -24,6 +26,10 @@ export const Application = hot(() => {
 
         ipcRenderer.on('showSettings', () => {
             dispatch(showSettings());
+        });
+
+        ipcRenderer.on('submitRequest', () => {
+            submitRequest()(dispatch, getState);
         });
     });
 

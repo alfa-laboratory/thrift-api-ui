@@ -24,7 +24,6 @@ const StyledBrowser = styled(MethodsFilterContainer)`
     justify-self: stretch;
     align-self: stretch;
     border-right: 1px solid #eee;
-    overflow: scroll;
 `;
 
 const StyledTabs = styled(TabsContainer)`
@@ -33,6 +32,7 @@ const StyledTabs = styled(TabsContainer)`
 
 const StyledRequestEditor = styled(RequestEditorContainer)`
     grid-area: request;
+    border-bottom: 1px solid #eee;
 `;
 
 const StyledEndpoint = styled(EndpointContainer)`

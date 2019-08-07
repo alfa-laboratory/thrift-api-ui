@@ -36,6 +36,18 @@ const createWindow = async () => {
             label: 'ThriftAPI UI',
             submenu: [
                 {
+                    label: 'Send request',
+                    accelerator: 'CmdOrCtrl+Enter',
+                    click() {
+                        if (win) {
+                            win.webContents.send('submitRequest');
+                        }
+                    }
+                },
+                {
+                    type: 'separator'
+                },
+                {
                     label: 'Preferences',
                     accelerator: 'CmdOrCtrl+,',
                     click() {

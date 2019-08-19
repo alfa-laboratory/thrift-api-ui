@@ -1,8 +1,8 @@
 import {
-    HistoryActionTypes,
+    AllActions,
     SAVE_REQUEST,
     DELETE_REQUEST
-} from '../actions/savedRequests';
+} from '../actions';
 import { SavedRequestEntry } from '../utils/savedRequests';
 
 export type HistoryState = {
@@ -17,7 +17,7 @@ const initialState: HistoryState = {
     entries: {}
 };
 
-export function savedRequestsReducer(state: HistoryState = initialState, action: HistoryActionTypes): HistoryState {
+export function savedRequestsReducer(state: HistoryState = initialState, action: AllActions): HistoryState {
     switch (action.type) {
         case SAVE_REQUEST:
             return {

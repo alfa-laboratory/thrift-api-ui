@@ -1,10 +1,10 @@
 import { ParsedService, ProgramAst } from 'thriftrw';
 import {
-    SettingsActionTypes,
+    AllActions,
     SET_THRIFT_SOURCE_PATH,
     SET_THRIFT_SOURCE_PATH_ERROR,
     SET_THRIFT_SOURCE_PATH_SUCCESS
-} from '../actions/settings';
+} from '../actions';
 import { LoadingState } from '../utils/loadingState';
 
 export type ServicesState = {
@@ -19,7 +19,7 @@ const initialState: ServicesState = {
     loadingState: LoadingState.Unknown
 };
 
-export function servicesReducer(state: ServicesState = initialState, action: SettingsActionTypes): ServicesState {
+export function servicesReducer(state: ServicesState = initialState, action: AllActions): ServicesState {
     switch (action.type) {
         case SET_THRIFT_SOURCE_PATH:
             return {

@@ -1,6 +1,6 @@
 import { LoadingState } from '../utils/loadingState';
 import {
-    EditorActions,
+    AllActions,
     CREATE_TAB,
     CLOSE_TAB,
     SELECT_TAB,
@@ -9,8 +9,9 @@ import {
     SET_REQUEST,
     SUBMIT_REQUEST,
     SUBMIT_REQUEST_ERROR,
-    SUBMIT_REQUEST_SUCCESS
-} from '../actions/editor';
+    SUBMIT_REQUEST_SUCCESS,
+    SET_THRIFT_SOURCE_PATH_SUCCESS, LOAD_SAVED_REQUEST
+} from '../actions';
 
 export type SelectedMethod = {
     serviceName: string;
@@ -49,9 +50,9 @@ const initialState: EditorReducerState = {
     tabKeyCounter: 0
 };
 
-export function editorReducer(state: EditorReducerState = initialState, action: EditorActions): EditorReducerState {
+export function editorReducer(state: EditorReducerState = initialState, action: AllActions): EditorReducerState {
     switch (action.type) {
-        case CREATE_TAB:
+        case CREATE_TAB: {
             const newTabCounter = state.tabKeyCounter + 1;
 
             return {
@@ -67,8 +68,9 @@ export function editorReducer(state: EditorReducerState = initialState, action: 
                 activeTabId: newTabCounter.toString(10),
                 tabKeyCounter: newTabCounter
             };
-        case CLOSE_TAB:
-            const tabs = {...state.tabs};
+        }
+        case CLOSE_TAB: {
+            const tabs = { ...state.tabs };
             delete tabs[action.tabId];
             const tabsOrder = state.tabsOrder.filter(id => id !== action.tabId);
 
@@ -91,6 +93,7 @@ export function editorReducer(state: EditorReducerState = initialState, action: 
                 activeTabId,
                 tabKeyCounter
             };
+        }
         case SELECT_TAB:
             return {
                 ...state,
@@ -167,6 +170,40 @@ export function editorReducer(state: EditorReducerState = initialState, action: 
                     }
                 }
             };
+        case SET_THRIFT_SOURCE_PATH_SUCCESS:
+            return {
+                ...state,
+                tabs: {
+                    '0': { ...DEFAULT_TAB_STATE }
+                },
+                tabsOrder: ['0'],
+                activeTabId: '0',
+            };
+        case LOAD_SAVED_REQUEST: {
+            const newTabCounter = state.tabKeyCounter + 1;
+
+            return {
+                ...state,
+                tabs: {
+                    ...state.tabs,
+                    [newTabCounter.toString(10)]: {
+                        ...DEFAULT_TAB_STATE,
+                        endpoint: action.entry.endpoint,
+                        request: action.entry.request,
+                        selectedMethod: {
+                            serviceName: action.entry.serviceName,
+                            methodName: action.entry.methodName
+                        }
+                    }
+                },
+                tabsOrder: [
+                    ...state.tabsOrder,
+                    newTabCounter.toString(10)
+                ],
+                activeTabId: newTabCounter.toString(10),
+                tabKeyCounter: newTabCounter
+            };
+        }
         default:
             return state;
     }

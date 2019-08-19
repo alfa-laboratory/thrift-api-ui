@@ -26,10 +26,10 @@ const historyAc = {
     }
 };
 
-export type HistoryActionTypes = ActionsUnion<typeof historyAc>;
-type HistoryThunkAction = AppThunkAction<HistoryActionTypes>;
+export type SavedRequestsActionTypes = ActionsUnion<typeof historyAc>;
+type SavedRequestsThunkAction = AppThunkAction<SavedRequestsActionTypes>;
 
-export function saveRequest(name: string): HistoryThunkAction {
+export function saveRequest(name: string): SavedRequestsThunkAction {
     return (dispatch, getState) => {
         const state = getState();
         const methodName = selectedMethodSelector(state);

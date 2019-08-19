@@ -6,8 +6,8 @@ import {
     SAVE_ENDPOINT_HISTORY,
     SHOW_SETTINGS,
     HIDE_SETTINGS,
-    SettingsActionTypes
-} from '../actions/settings';
+    AllActions
+} from '../actions';
 
 export type SettingsState = {
     endpointsHistory: string[];
@@ -25,7 +25,7 @@ export const defaultState: SettingsState = {
     endpointsHistory: []
 };
 
-export function settingsReducer(state: SettingsState = defaultState, action: SettingsActionTypes): SettingsState {
+export function settingsReducer(state: SettingsState = defaultState, action: AllActions): SettingsState {
     switch (action.type) {
         case SET_THRIFT_SOURCE_PATH_SUCCESS:
             return {

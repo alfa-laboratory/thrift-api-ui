@@ -10,6 +10,7 @@ import {
 import { requestProxySelector, requestTimeoutSelector } from '../selectors/settings';
 import { saveEndpointHistory } from './settings';
 import { savedEntriesSelector } from '../selectors/savedRequests';
+import { SavedRequestEntry } from '../utils/savedRequests';
 
 export const CREATE_TAB = '@editor/createTab';
 export const CLOSE_TAB = '@editor/closeTab';
@@ -20,6 +21,7 @@ export const SET_REQUEST = '@editor/setRequest';
 export const SUBMIT_REQUEST = '@editor/submitRequest';
 export const SUBMIT_REQUEST_ERROR = '@editor/submitRequestError';
 export const SUBMIT_REQUEST_SUCCESS = '@editor/submitRequestSuccess';
+export const LOAD_SAVED_REQUEST = '@editor/loadSavedRequest';
 
 const editorAC = {
     createTab() {
@@ -79,9 +81,15 @@ const editorAC = {
             response
         } as const;
     },
+    loadSavedRequest(entry: SavedRequestEntry) {
+        return {
+            type: LOAD_SAVED_REQUEST,
+            entry
+        } as const;
+    }
 };
 
-export type EditorActions = ActionsUnion<typeof editorAC>;
+export type EditorActionsTypes = ActionsUnion<typeof editorAC>;
 
 export const selectTab = editorAC.selectTab;
 export const createTab = editorAC.createTab;
@@ -156,9 +164,8 @@ export function loadSavedRequest(id: string) {
             return;
         }
 
-        dispatch(editorAC.createTab());
-        dispatch(editorAC.setEndpoint(entry.endpoint));
-        dispatch(editorAC.selectServiceAndMethod(entry.serviceName, entry.methodName));
-        dispatch(editorAC.setRequest(entry.request));
+        dispatch(editorAC.loadSavedRequest(
+            entry
+        ));
     }
 }

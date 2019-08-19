@@ -6,7 +6,7 @@
     "name": "Aleksandr Kitov",
     "email": "kitov.nn@gmail.com"
   },
-  "license": "MPL",
+  "license": "MIT",
   "description": "",
   "main": "./dist/main.js",
   "scripts": {

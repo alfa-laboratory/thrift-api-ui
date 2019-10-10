@@ -1,43 +1,64 @@
 import React from 'react';
 import styled from 'styled-components';
 import IconClose from 'arui-feather/icon/ui/close';
+import { animate } from '../utils/cssUtils';
 
-type BaseProps = {
+type Props = {
     name: string;
     id: string;
     isActive: boolean;
     onClick: (id: string) => void;
     className?: string;
-};
-
-type ClosableProps = {
-    hideCloseButton?: false;
+    hideCloseButton?: boolean;
     onCloseClick: (id: string) => void;
 };
 
-type NotClosableProps = {
-    hideCloseButton: true;
-};
-
-type Props = BaseProps & (ClosableProps | NotClosableProps);
-
 type StyledButtonProps = { isActive: boolean; };
 
+const CornerDecoration = styled.div`
+    display: none;
+    position: absolute;
+    bottom: 0;
+    width: 8px;
+    height: 8px;
+    overflow: hidden;
+
+    &:before {
+        content: '';
+        display: block;
+        width: 8px;
+        height: 8px;
+        box-shadow: 0 0 0 10px #1a1a1a;
+    }
+`;
+
+const selectedTabStyle = `
+    padding: 0 28px 0 12px;
+
+    ${CornerDecoration} {
+        display: block;
+    }
+`
+
 const StyledButton = styled.div<StyledButtonProps>`
-    border: 0;
-    border-right: 1px solid #e6e6e6;
-    border-bottom: ${ props => props.isActive ? '0' : '1px solid #e6e6e6' };
-    background: ${ props => props.isActive ? '#fff' : '#f3f3f3' };
-    padding: 10px 25px 10px 10px;
+    background: ${props => props.isActive ? '#1a1a1a' : 'none'};
+    border-radius: 8px 8px 0 0;
     height: 40px;
-    font-size: 14px;
+    flex: 1;
+    max-width: 220px;
+    line-height: 40px;
+    color: #ffffff;
+    opacity: ${props => props.isActive ? '1' : '0.6'};
+    padding: 0 20px;
+    font-size: 13px;
     outline: 0;
     cursor: pointer;
     position: relative;
     display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    position: relative;
+    transition: ${animate(['background', 'opacity', 'padding'])};
+
+    ${props => props.isActive ? selectedTabStyle : ''}
 `;
 
 const CloseButton = styled.button`
@@ -52,9 +73,33 @@ const CloseButton = styled.button`
     outline: 0;
     opacity: 0.5;
     vertical-align: middle;
-    :hover {
+
+    &:hover {
         opacity: 0.7;
     }
+`;
+
+const LeftCornerDecoration = styled(CornerDecoration)`
+    right: 100%;
+
+    &:before {
+        border-bottom-right-radius: 100%;
+    }
+`;
+
+const RightCornerDecoration = styled(CornerDecoration)`
+    left: 100%;
+
+    &:before {
+        border-bottom-left-radius: 100%;
+    }
+`;
+
+const OverflowControl = styled.div`
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 `;
 
 export const EditorTabItem = (props: Props) => {
@@ -77,12 +122,14 @@ export const EditorTabItem = (props: Props) => {
             onClick={ handleClick }
             isActive={ props.isActive }
         >
-            { props.name }
+            <OverflowControl>{ props.name }</OverflowControl>
             { props.hideCloseButton !== true && (
                 <CloseButton onClick={ handleCloseClick }>
-                    <IconClose size='xs' />
+                    <IconClose size='xs' theme='alfa-on-color' />
                 </CloseButton>
             ) }
+            <LeftCornerDecoration />
+            <RightCornerDecoration />
         </StyledButton>
     );
 };

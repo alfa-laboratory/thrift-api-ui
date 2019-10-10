@@ -11,12 +11,12 @@ const StyledLayout = styled.div`
     height: 100%;
     display: grid;
     grid-template-areas:
-        "browser tabs"
-        "browser endpoint"
+        "tabs tabs"
+        "endpoint endpoint"
         "browser request"
         "browser response";
-    grid-template-columns: 290px minmax(0, 1fr);
-    grid-template-rows: 40px 80px 1fr 2fr;
+    grid-template-columns: 280px minmax(0, 1fr);
+    grid-template-rows: auto auto 1fr 1fr;
 `;
 
 const StyledBrowser = styled(MethodsFilterContainer)`
@@ -24,6 +24,8 @@ const StyledBrowser = styled(MethodsFilterContainer)`
     justify-self: stretch;
     align-self: stretch;
     border-right: 1px solid #eee;
+    padding: 24px;
+    background: #e5e5e5;
 `;
 
 const StyledTabs = styled(TabsContainer)`
@@ -33,14 +35,17 @@ const StyledTabs = styled(TabsContainer)`
 const StyledRequestEditor = styled(RequestEditorContainer)`
     grid-area: request;
     border-bottom: 1px solid #eee;
+    padding: 16px 0;
 `;
 
 const StyledEndpoint = styled(EndpointContainer)`
     grid-area: endpoint;
+    background: #1a1a1a;
 `;
 
 const StyledResponseViewer = styled(ResponseViewerContainer)`
     grid-area: response;
+    padding: 16px 0;
 `;
 
 export const Layout = () => (

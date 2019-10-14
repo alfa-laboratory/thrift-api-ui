@@ -29,7 +29,7 @@ export const activeTabSelector = createSelector(
 );
 export const selectedMethodSelector = createSelector(
     activeTabSelector,
-    tab => tab.selectedMethod
+    tab => tab.selectedMethod || null
 );
 export const endpointSelector = createSelector(
     activeTabSelector,

@@ -7,20 +7,20 @@ import { deleteRequest } from '../actions/savedRequests';
 import { bindActionCreators, Dispatch } from 'redux';
 import { methodsListSelector } from '../selectors/services';
 import { savedRequestsSelector } from '../selectors/savedRequests';
+import { selectedMethodSelector } from '../selectors/editor';
 
 function mapStateToProps(state: RootState) {
     return {
         services: methodsListSelector(state),
-        savedRequests: savedRequestsSelector(state)
+        savedRequests: savedRequestsSelector(state),
+        selectedMethod: selectedMethodSelector(state)
     };
 }
 
-function mapDispatchToProps(dispatch: Dispatch) {
-    return bindActionCreators({
-        onMethodSelect: selectServiceAndMethod,
-        onSavedEntryDelete: deleteRequest,
-        onSavedEntrySelect: loadSavedRequest
-    }, dispatch);
-}
+const mapDispatchToProps = {
+    onMethodSelect: selectServiceAndMethod,
+    onSavedEntryDelete: deleteRequest,
+    onSavedEntrySelect: loadSavedRequest
+};
 
 export const MethodsFilterContainer = connect(mapStateToProps, mapDispatchToProps)(MethodsFilter);

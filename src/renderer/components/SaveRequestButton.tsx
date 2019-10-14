@@ -19,6 +19,17 @@ const StyledHeading = styled(Heading)`
     margin-top: 0;
 `;
 
+const StyledButton = styled(Button)`
+    && {
+        border: 0;
+        background: #ffffff;
+        color: black;
+        text-transform: uppercase;
+        font-size: 12px;
+        margin-left: 16px;
+    }
+`;
+
 export const SaveRequestButton = React.memo((props: Props) => {
     const inputNodeRef = React.useRef<Input | null>(null);
     const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -41,14 +52,14 @@ export const SaveRequestButton = React.memo((props: Props) => {
 
     return (
         <>
-            <Button
+            <StyledButton
                 text='Save'
-                size='l'
+                size='m'
                 className={ props.className }
                 onClick={ handleSaveClick }
             >
                 Save
-            </Button>
+            </StyledButton>
             <StyledModal
                 isVisible={ isModalVisible }
                 isClosable={ true }

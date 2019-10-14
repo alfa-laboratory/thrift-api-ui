@@ -21,7 +21,38 @@ const UrlBlock = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-    margin-left: 10px;
+    && {
+        font-size: 12px;
+        text-transform: uppercase;
+        background: #F03226;
+        color: #ffffff;
+        border: 0;
+        margin-left: 16px;
+    }
+`;
+
+const StyledInput = styled(InputAutocomplete)`
+    && .input__box {
+        background: rgba(255, 255, 255, .2);
+        border: 0;
+        border-radius: 4px;
+        height: 40px;
+        box-shadow: none;
+    }
+
+    && .input__control {
+        color: #ffffff;
+        height: 40px;
+        min-height: auto;
+        line-height: 40px;
+        padding: 0;
+        font-size: 13px;
+
+        ::placeholder {
+            color: #ffffff;
+            opacity: 0.4;
+        }
+    }
 `;
 
 function filterEndpoints(inputValue: string, options: string[]) {
@@ -30,8 +61,8 @@ function filterEndpoints(inputValue: string, options: string[]) {
 
 export const EndpointEditor = (props: Props) => (
     <UrlBlock className={ props.className }>
-        <InputAutocomplete
-            label='Service endpoint'
+        <StyledInput
+            placeholder='Enter service endpoint'
             width='available'
             view='filled'
             value={ props.endpoint }
@@ -40,14 +71,13 @@ export const EndpointEditor = (props: Props) => (
             onChange={ props.onEndpointChange }
             onBlur={ props.onEndpointEditFinished }
         />
-        <StyledButton
-            text='Send'
-            size='l'
-            view='extra'
-            onClick={ props.onSubmit }
-        />
         <SaveRequestButton
             onSave={ props.onSave }
+        />
+        <StyledButton
+            text='Send'
+            size='m'
+            onClick={ props.onSubmit }
         />
     </UrlBlock>
 );

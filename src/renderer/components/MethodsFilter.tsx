@@ -1,14 +1,17 @@
 import React from 'react';
 import Input from 'arui-feather/input';
+import SearchIcon from 'arui-feather/icon/action/search';
 import styled from 'styled-components';
 import { ServicesMethods } from './ServicesMethods';
 import { SavedRequestEntry } from '../utils/savedRequests';
 import { SavedRequests } from './SavedRequests';
-import { EditorTabItem } from './EditorTabItem';
+import { BrowserTabItem } from './BrowserTabItem';
+import { SelectedMethod } from '../reducers/editorReducer';
 
 type Props = {
     services: Record<string, string[]>;
     savedRequests: SavedRequestEntry[];
+    selectedMethod: SelectedMethod | null;
     onMethodSelect: (serviceName: string, methodName: string) => void;
     onSavedEntrySelect: (id: string) => void;
     onSavedEntryDelete: (id: string) => void;
@@ -16,15 +19,12 @@ type Props = {
 };
 
 const FilterInputContainer = styled.div`
-    padding: 10px;
+    margin: 19px 0;
 `;
 
-const TabsContainer = styled.div`
-    border-bottom: 1px solid #e6e6e6;
-    border-top: 1px solid #e6e6e6;
-`;
+const TabsContainer = styled.div``;
 
-const filterAndTabsHeight = '120px';
+const filterAndTabsHeight = '110px';
 
 const FilterAndTabsContainer = styled.div`
     height: ${filterAndTabsHeight};
@@ -35,49 +35,83 @@ const TabContainer = styled.div`
     overflow: scroll;
 `;
 
+const StyledInput = styled(Input)`
+    && .input__box {
+        background: #ffffff;
+        border: 0;
+        border-radius: 4px;
+        height: 40px;
+        box-shadow: none;
+        box-shadow: 0px 1px 4px rgba(11, 31, 53, 0.12);
+    }
+
+    && .input__control {
+        color: #0B1F35;
+        height: 40px;
+        min-height: auto;
+        line-height: 40px;
+        padding: 0;
+        font-size: 13px;
+
+        ::placeholder {
+            color: #0B1F35;
+            opacity: 0.3;
+        }
+    }
+`;
+
+const StyledSearchIcon = styled(SearchIcon)`
+    opacity: 0.4;
+`;
+
+enum Tab {
+    METHODS = 'methods',
+    SAVED = 'saved'
+}
+
+const tabs: Record<string, string> = {
+    [Tab.METHODS]: 'Methods',
+    [Tab.SAVED]: 'Saved Requests'
+};
+
 export const MethodsFilter = React.memo((props: Props) => {
     const [searchString, setSearchString] = React.useState('');
-    const [activeTab, setActiveTab] = React.useState<'saved' | 'methods'>('methods');
+    const [activeTab, setActiveTab] = React.useState<string>(Tab.METHODS);
 
-    const selectSavedTab = React.useCallback(() => {
-        setActiveTab('saved');
-    }, []);
-    const selectMethodsTab = React.useCallback(() => {
-        setActiveTab('methods');
+    const selectTab = React.useCallback((id: string) => {
+        setActiveTab(id);
     }, []);
 
     return (
         <div className={ props.className }>
             <FilterAndTabsContainer>
+                <TabsContainer>
+                    {
+                        Object.keys(tabs).map(id => (
+                            <BrowserTabItem
+                                key={ id }
+                                name={ tabs[id] }
+                                id={ id }
+                                isActive={ activeTab === id }
+                                onClick={ selectTab }
+                            />
+                        ))
+                    }
+                </TabsContainer>
                 <FilterInputContainer>
-                    <Input
+                    <StyledInput
                         value={ searchString }
                         onChange={ setSearchString }
                         width='available'
                         view='filled'
-                        label='Filter'
+                        placeholder='Search...'
+                        leftAddons={ <StyledSearchIcon size='s' /> }
                     />
                 </FilterInputContainer>
-                <TabsContainer>
-                    <EditorTabItem
-                        name='methods'
-                        id='methods'
-                        isActive={ activeTab === 'methods' }
-                        onClick={ selectMethodsTab }
-                        hideCloseButton={ true }
-                    />
-                    <EditorTabItem
-                        name='Saved'
-                        id='saved'
-                        isActive={ activeTab === 'saved' }
-                        onClick={ selectSavedTab }
-                        hideCloseButton={ true }
-                    />
-                </TabsContainer>
             </FilterAndTabsContainer>
 
             <TabContainer>
-                { activeTab === 'saved' && (
+                { activeTab === Tab.SAVED && (
                     <SavedRequests
                         searchString={ searchString }
                         savedRequests={ props.savedRequests }
@@ -85,9 +119,10 @@ export const MethodsFilter = React.memo((props: Props) => {
                         onSavedEntrySelect={ props.onSavedEntrySelect }
                     />
                 ) }
-                { activeTab === 'methods' && (
+                { activeTab === Tab.METHODS && (
                     <ServicesMethods
                         searchString={ searchString }
+                        selectedMethod={ props.selectedMethod }
                         services={ props.services }
                         onMethodSelect={ props.onMethodSelect }
                     />

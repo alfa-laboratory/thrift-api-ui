@@ -15,23 +15,29 @@ type Props = {
 };
 
 const StyledEditorTabs = styled.div`
-    display: flex;
-    align-items: flex-start;
-    border-bottom: 1px solid #e6e6e6;
+    padding-top: 8px;
+    background: #000000;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 `;
 
-const TabPlusButton = styled.button`
+const StyledTabButton = styled(EditorTabItem)`
+    display: table-cell;
+`;
+
+const TabPlusButton = styled.div`
+    background: none;
     border: 0;
     padding: 10px;
     outline: 0;
     cursor: pointer;
-    position: relative;
-    display: inline-block;
+    display: table-cell;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 0;
-    height: 39px;
+    height: 40px;
+    width: 40px;
 `;
 
 export const EditorTabs = (props: Props) => {
@@ -52,17 +58,18 @@ export const EditorTabs = (props: Props) => {
     return (
         <StyledEditorTabs className={ props.className }>
             { props.tabs.map(tab => (
-                <EditorTabItem
+                <StyledTabButton
                     name={ tab.name }
                     id={ tab.id }
                     isActive={ tab.id === props.activeTabId }
                     onClick={ props.onSelectTab }
                     onCloseClick={ props.onTabClose }
+                    hideCloseButton={ tab.id !== props.activeTabId }
                     key={ tab.id }
                 />
             )) }
             <TabPlusButton onClick={ props.onCreateTab }>
-                <IconPaymentPlus />
+                <IconPaymentPlus theme='alfa-on-color' />
             </TabPlusButton>
         </StyledEditorTabs>
     )

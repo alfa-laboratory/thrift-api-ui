@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 import { RootState } from '../reducers';
-import { ServiceAst } from 'thriftrw';
+import { FunctionAst, ServiceAst } from 'thriftrw';
 import { getMethodDefaultRequest } from '../utils/defaultRequest';
 import { getMethodJsonSchema } from '../utils/getMethodJsonSchema';
 import { selectedMethodSelector } from './editor';
@@ -60,11 +60,26 @@ export const allServicesSelector = createSelector(
     }, {} as Record<string, ServiceAst>)
 );
 
-export const methodAstSelector = (state: RootState, serviceName: string, methodName: string) => {
+export const methodAstSelector = (
+    state: RootState, serviceName: string, methodName: string
+): FunctionAst | undefined => {
     const services = allServicesSelector(state);
     const serviceAst = services[serviceName];
 
-    return serviceAst.functions.find(method => method.id.name === methodName)!;
+    const ownMethod = serviceAst.functions.find(method => method.id.name === methodName)!;
+
+    if (ownMethod) {
+        return ownMethod;
+    }
+
+    if (serviceAst.baseService) {
+        const baseServiceName = serviceAst.baseService.name.indexOf('.') !== -1
+            ? serviceAst.baseService.name.split('.')[1]
+            : serviceAst.baseService.name;
+        return methodAstSelector(state, baseServiceName, methodName);
+    }
+
+    return undefined;
 };
 
 export const methodDefaultRequestSelector = createSelector(

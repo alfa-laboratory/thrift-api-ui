@@ -1,14 +1,20 @@
 import { Definitions, FieldAst, FunctionAst, ProgramAst } from 'thriftrw';
 import { resolveType } from './astHelpers';
 
-export function getMethodDefaultRequest(methodDefinition: FunctionAst, thriftDefinitions: Record<string, ProgramAst>) {
+export function getMethodDefaultRequest(
+    methodDefinition: FunctionAst | undefined, thriftDefinitions: Record<string, ProgramAst>
+) {
     return JSON.stringify(getDefaultObjectValue(methodDefinition, thriftDefinitions), null, 4);
 }
 
 function getDefaultObjectValue(
-    methodAst: FunctionAst | Definitions,
+    methodAst: FunctionAst | Definitions | undefined,
     thriftDefinitions: Record<string, ProgramAst>
 ) {
+    if (!methodAst) {
+        return '';
+    }
+
     const obj: any = {};
     if (methodAst.type === 'Enum') {
         return '';

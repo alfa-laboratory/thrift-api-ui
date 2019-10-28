@@ -1,14 +1,20 @@
 import { Definitions, FieldAst, FunctionAst, ProgramAst } from 'thriftrw';
 import { resolveType } from './astHelpers';
 
-export function getMethodJsonSchema(methodDefinition: FunctionAst, thriftDefinitions: Record<string, ProgramAst>) {
+export function getMethodJsonSchema(
+    methodDefinition: FunctionAst | undefined, thriftDefinitions: Record<string, ProgramAst>
+) {
     return getObjectSchema(methodDefinition, thriftDefinitions)
 }
 
 function getObjectSchema(
-    methodAst: FunctionAst | Definitions,
+    methodAst: FunctionAst | Definitions | undefined,
     thriftDefinitions: Record<string, ProgramAst>
 ) {
+    if (!methodAst) {
+        return ''
+    }
+
     const obj: any = {
         type: 'object',
         title: methodAst.id.name,

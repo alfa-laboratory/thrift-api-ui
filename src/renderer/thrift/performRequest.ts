@@ -35,6 +35,9 @@ export async function performRequest(
 
     const res = await promise;
     const parsed = method.resultMessageRW.readFrom(res, 0);
+    if (parsed.err) {
+        throw parsed.err;
+    }
     if (parsed.value.body.success) {
         return JSON.stringify(parsed.value.body.success, jsonNormalizerFilter, 4);
     }

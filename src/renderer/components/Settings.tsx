@@ -85,7 +85,7 @@ export const Settings = (props: Props) => {
                         disabled={ props.isThriftParsingInProgress }
                     />
                 </SettingsRow>
-                { props.version }
+                { `Version: ${props.version}` }
             </StyledSettings>
         </Modal>
     );

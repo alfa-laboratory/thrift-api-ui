@@ -9,7 +9,8 @@ import {
     proxyEnabledSelector,
     proxyUrlSelector,
     requestTimeoutSelector,
-    thriftSrcPathSelector
+    thriftSrcPathSelector,
+    versionSelector
 } from '../selectors/settings';
 import { isThriftParsingInProgressSelector } from '../selectors/services';
 
@@ -20,7 +21,8 @@ function mapStateToProps(state: RootState) {
         requestTimeout: requestTimeoutSelector(state),
         thriftSrcPath: thriftSrcPathSelector(state),
         isOpened: isSettingsOpenedSelector(state),
-        isThriftParsingInProgress: isThriftParsingInProgressSelector(state)
+        isThriftParsingInProgress: isThriftParsingInProgressSelector(state),
+        version: versionSelector(state)
     };
 }
 

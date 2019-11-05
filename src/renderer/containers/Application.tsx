@@ -1,9 +1,9 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
-import { ipcRenderer } from 'electron';
+import { ipcRenderer, remote } from 'electron';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { Layout } from '../components/Layout';
-import { setThriftSource, showSelectThriftPathDialog, showSettings } from '../actions/settings';
+import { setThriftSource, showSelectThriftPathDialog, showSettings, setVersion } from '../actions/settings';
 import { thriftSrcPathSelector } from '../selectors/settings';
 import { SettingsContainer } from './SettingsContainer';
 import { isThriftParsedSelector, isThriftParsingInProgressSelector } from '../selectors/services';
@@ -20,6 +20,8 @@ export const Application = hot(() => {
     const isThriftLoading = useSelector(isThriftParsingInProgressSelector);
 
     useOnMount(() => {
+        dispatch(setVersion(remote.app.getVersion()));
+
         if (thriftSrcPath) {
             dispatch(setThriftSource(thriftSrcPath));
         }

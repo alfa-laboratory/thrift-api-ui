@@ -38,3 +38,8 @@ export const isSettingsOpenedSelector = createSelector(
     settingsSelector,
     state => state.isOpened
 );
+
+export const versionSelector = createSelector(
+    settingsSelector,
+    state => state.version
+);

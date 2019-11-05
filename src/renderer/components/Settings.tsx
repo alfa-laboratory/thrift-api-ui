@@ -19,6 +19,7 @@ type Props = {
     onRequestTimeoutChange: (value: number) => void;
     onChangePathClick: () => void;
     className?: string;
+    version?: string;
 };
 
 const StyledSettings = styled.div`
@@ -84,6 +85,7 @@ export const Settings = (props: Props) => {
                         disabled={ props.isThriftParsingInProgress }
                     />
                 </SettingsRow>
+                { props.version }
             </StyledSettings>
         </Modal>
     );

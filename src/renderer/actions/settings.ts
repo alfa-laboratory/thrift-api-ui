@@ -11,6 +11,7 @@ export const SET_THRIFT_SOURCE_PATH_ERROR = '@settings/setThriftSourcePathError'
 export const SET_PROXY_URL = '@settings/setProxyUrl';
 export const SET_PROXY_ENABLED = '@settings/setProxyEnabled';
 export const SET_REQUEST_TIMEOUT = '@settings/setRequestTimeout';
+export const SET_VERSION = '@settings/setVersion';
 export const SAVE_ENDPOINT_HISTORY = '@settings/saveEndpointHistory';
 export const SHOW_SETTINGS = '@settings/showSettings';
 export const HIDE_SETTINGS = '@settings/hideSettings';
@@ -79,6 +80,12 @@ const settingsAC = {
             type: HIDE_SETTINGS,
         } as const;
     },
+    setVersion(version: string) {
+        return {
+            type: SET_VERSION,
+            version
+        } as const;
+    }
 };
 
 export type SettingsActionTypes = ActionsUnion<typeof settingsAC>;
@@ -105,6 +112,7 @@ export const setRequestTimeout = settingsAC.setRequestTimeout;
 export const saveEndpointHistory = settingsAC.saveEndpointHistory;
 export const showSettings = settingsAC.showSettings;
 export const hideSettings = settingsAC.hideSettings;
+export const setVersion = settingsAC.setVersion;
 
 export function onEndpointEditFinished(): SettingsThunkAction {
     return (dispatch, getState) => {

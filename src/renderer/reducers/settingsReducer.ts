@@ -6,6 +6,7 @@ import {
     SAVE_ENDPOINT_HISTORY,
     SHOW_SETTINGS,
     HIDE_SETTINGS,
+    SET_VERSION,
     AllActions
 } from '../actions';
 
@@ -16,6 +17,7 @@ export type SettingsState = {
     isOpened: boolean;
     isProxyEnabled: boolean;
     requestTimeout: number;
+    version?: string;
 };
 
 export const defaultState: SettingsState = {
@@ -62,6 +64,11 @@ export function settingsReducer(state: SettingsState = defaultState, action: All
                 ...state,
                 isOpened: false
             };
+        case SET_VERSION:
+            return {
+                ...state,
+                version: action.version
+            }
     }
     return state;
 }

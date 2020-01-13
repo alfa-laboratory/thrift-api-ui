@@ -1,19 +1,21 @@
 import {
-    SET_THRIFT_SOURCE_PATH_SUCCESS,
-    SET_PROXY_URL,
-    SET_PROXY_ENABLED,
-    SET_REQUEST_TIMEOUT,
-    SAVE_ENDPOINT_HISTORY,
-    SHOW_SETTINGS,
+    AllActions,
     HIDE_SETTINGS,
+    SAVE_ENDPOINT_HISTORY,
+    SET_MULTIPLEXER_ENABLED,
+    SET_PROXY_ENABLED,
+    SET_PROXY_URL,
+    SET_REQUEST_TIMEOUT,
+    SET_THRIFT_SOURCE_PATH_SUCCESS,
     SET_VERSION,
-    AllActions
+    SHOW_SETTINGS
 } from '../actions';
 
 export type SettingsState = {
     endpointsHistory: string[];
     thriftPath?: string;
     proxyUrl?: string;
+    isMultiplexerEnabled: boolean;
     isOpened: boolean;
     isProxyEnabled: boolean;
     requestTimeout: number;
@@ -21,6 +23,7 @@ export type SettingsState = {
 };
 
 export const defaultState: SettingsState = {
+    isMultiplexerEnabled: false,
     isOpened: false,
     isProxyEnabled: false,
     requestTimeout: 3000,
@@ -29,6 +32,11 @@ export const defaultState: SettingsState = {
 
 export function settingsReducer(state: SettingsState = defaultState, action: AllActions): SettingsState {
     switch (action.type) {
+        case SET_MULTIPLEXER_ENABLED:
+            return {
+                ...state,
+                isMultiplexerEnabled: action.value
+            };
         case SET_THRIFT_SOURCE_PATH_SUCCESS:
             return {
                 ...state,

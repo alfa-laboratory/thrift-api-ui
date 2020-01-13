@@ -6,6 +6,7 @@ import { bindActionCreators, Dispatch } from 'redux';
 import { Settings } from '../components/Settings';
 import {
     isSettingsOpenedSelector,
+    multiplexerEnabledSelector,
     proxyEnabledSelector,
     proxyUrlSelector,
     requestTimeoutSelector,
@@ -16,6 +17,7 @@ import { isThriftParsingInProgressSelector } from '../selectors/services';
 
 function mapStateToProps(state: RootState) {
     return {
+        isMultiplexerEnabled: multiplexerEnabledSelector(state),
         isProxyEnabled: proxyEnabledSelector(state),
         proxyUrl: proxyUrlSelector(state),
         requestTimeout: requestTimeoutSelector(state),
@@ -29,6 +31,7 @@ function mapStateToProps(state: RootState) {
 function mapDispatchToProps(dispatch: Dispatch) {
     return bindActionCreators({
         onProxyUrlChange: settingsActions.setProxyUrl,
+        onIsMultiplexerEnabledChange: settingsActions.setMultiplexerEnabled,
         onIsProxyEnabledChange: settingsActions.setProxyEnabled,
         onRequestTimeoutChange: settingsActions.setRequestTimeout,
         onChangePathClick: settingsActions.showSelectThriftPathDialog,

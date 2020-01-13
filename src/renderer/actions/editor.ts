@@ -2,15 +2,22 @@ import { ActionsUnion } from '../utils/actionsUnion';
 import { ThunkDispatch } from 'redux-thunk';
 import { RootState } from '../reducers';
 import { performRequest } from '../thrift/performRequest';
-import { activeTabIdSelector, endpointSelector, requestSelector, selectedMethodSelector } from '../selectors/editor';
+import {
+    activeTabIdSelector,
+    endpointSelector,
+    modifiedServiceNameSelector,
+    requestSelector,
+    selectedMethodSelector
+} from '../selectors/editor';
 import {
     methodDefaultRequestSelector,
     servicesStateSelector
 } from '../selectors/services';
-import { requestProxySelector, requestTimeoutSelector } from '../selectors/settings';
+import { multiplexerEnabledSelector, requestProxySelector, requestTimeoutSelector } from '../selectors/settings';
 import { saveEndpointHistory } from './settings';
 import { savedEntriesSelector } from '../selectors/savedRequests';
 import { SavedRequestEntry } from '../utils/savedRequests';
+import { SelectedMethod } from "../reducers/editorReducer";
 
 export const CREATE_TAB = '@editor/createTab';
 export const CLOSE_TAB = '@editor/closeTab';
@@ -18,6 +25,7 @@ export const SELECT_TAB = '@editor/selectTab';
 export const SELECT_SERVICE_AND_METHOD = '@editor/selectServiceAndMethod';
 export const SET_ENDPOINT = '@editor/setEndpoint';
 export const SET_REQUEST = '@editor/setRequest';
+export const SET_SERVICE_NAME = '@editor/setServiceName';
 export const SUBMIT_REQUEST = '@editor/submitRequest';
 export const SUBMIT_REQUEST_ERROR = '@editor/submitRequestError';
 export const SUBMIT_REQUEST_SUCCESS = '@editor/submitRequestSuccess';
@@ -58,6 +66,12 @@ const editorAC = {
         return {
             type: SET_REQUEST,
             value
+        } as const;
+    },
+    setServiceName(value: SelectedMethod) {
+        return {
+            type: SET_SERVICE_NAME,
+            selectedMethod: value
         } as const;
     },
     submitRequest(serviceName: string, methodName: string, endpoint: string, request: string) {
@@ -120,6 +134,7 @@ export function selectServiceAndMethod(serviceName: string, methodName: string) 
 }
 export const setEndpoint = editorAC.setEndpoint;
 export const setRequest = editorAC.setRequest;
+export const setServiceName = editorAC.setServiceName;
 
 export function submitRequest() {
     return async (dispatch: ThunkDispatch<RootState, {}, any>, getState: () => RootState) => {
@@ -129,9 +144,17 @@ export function submitRequest() {
         const endpoint = endpointSelector(state);
         const timeout = requestTimeoutSelector(state);
         const proxy = requestProxySelector(state);
+        const isMultiplexerEnabled = multiplexerEnabledSelector(state);
+        const modifiedServiceName = modifiedServiceNameSelector(state);
+
+        const dispatchError = (message: string) => dispatch(editorAC.submitRequestError(new Error(message)));
 
         if (!method) {
-            return dispatch(editorAC.submitRequestError(new Error('Select method')));
+            return dispatchError('Select method');
+        }
+
+        if (isMultiplexerEnabled && !modifiedServiceName) {
+            return dispatchError('Enter service name');
         }
 
         dispatch(editorAC.submitRequest(method.serviceName, method.methodName, endpoint, requestMessage));
@@ -139,9 +162,13 @@ export function submitRequest() {
         try {
             const servicesState = servicesStateSelector(state);
             const executor = servicesState.services[method.serviceName][method.methodName];
+            const messageName = isMultiplexerEnabled
+                ? `${modifiedServiceName}:${method.methodName}`
+                : method.methodName;
 
             const result = await performRequest({
                 method: executor,
+                messageName,
                 endpoint,
                 requestMessage,
                 timeout,

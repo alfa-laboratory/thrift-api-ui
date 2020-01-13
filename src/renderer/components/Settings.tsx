@@ -7,6 +7,7 @@ import Spin from 'arui-feather/spin';
 import { Modal } from './Modal';
 
 type Props = {
+    isMultiplexerEnabled: boolean;
     isProxyEnabled: boolean;
     proxyUrl?: string;
     thriftSrcPath?: string;
@@ -14,6 +15,7 @@ type Props = {
     isThriftParsingInProgress: boolean;
     isOpened: boolean;
     onClose: () => void;
+    onIsMultiplexerEnabledChange: (value: boolean) => void;
     onIsProxyEnabledChange: (value: boolean) => void;
     onProxyUrlChange: (value: string) => void;
     onRequestTimeoutChange: (value: number) => void;
@@ -44,6 +46,13 @@ export const Settings = (props: Props) => {
             className={ props.className }
         >
             <StyledSettings>
+                <SettingsRow>
+                    <CheckBox
+                        text='Enable multiplexed protocol'
+                        checked={ props.isMultiplexerEnabled }
+                        onChange={ props.onIsMultiplexerEnabledChange }
+                    />
+                </SettingsRow>
                 <SettingsRow>
                     <CheckBox
                         text='Enable proxy'

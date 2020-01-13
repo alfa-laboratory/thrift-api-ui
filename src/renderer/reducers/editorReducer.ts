@@ -7,6 +7,7 @@ import {
     SELECT_SERVICE_AND_METHOD,
     SET_ENDPOINT,
     SET_REQUEST,
+    SET_SERVICE_NAME,
     SUBMIT_REQUEST,
     SUBMIT_REQUEST_ERROR,
     SUBMIT_REQUEST_SUCCESS,
@@ -16,6 +17,7 @@ import {
 export type SelectedMethod = {
     serviceName: string;
     methodName: string;
+    modifiedServiceName?: string;
 }
 
 export type SingleTabState = {
@@ -108,7 +110,8 @@ export function editorReducer(state: EditorReducerState = initialState, action: 
                         ...state.tabs[state.activeTabId],
                         selectedMethod: {
                             serviceName: action.serviceName,
-                            methodName: action.methodName
+                            methodName: action.methodName,
+                            modifiedServiceName: action.serviceName,
                         }
                     }
                 }
@@ -132,6 +135,19 @@ export function editorReducer(state: EditorReducerState = initialState, action: 
                     [state.activeTabId]: {
                         ...state.tabs[state.activeTabId],
                         request: action.value
+                    }
+                }
+            };
+        case SET_SERVICE_NAME:
+            return {
+                ...state,
+                tabs: {
+                    ...state.tabs,
+                    [state.activeTabId]: {
+                        ...state.tabs[state.activeTabId],
+                        selectedMethod: {
+                            ...action.selectedMethod
+                        }
                     }
                 }
             };
@@ -192,7 +208,8 @@ export function editorReducer(state: EditorReducerState = initialState, action: 
                         request: action.entry.request,
                         selectedMethod: {
                             serviceName: action.entry.serviceName,
-                            methodName: action.entry.methodName
+                            methodName: action.entry.methodName,
+                            modifiedServiceName: action.entry.serviceName
                         }
                     }
                 },

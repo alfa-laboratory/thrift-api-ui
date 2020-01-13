@@ -29,6 +29,9 @@ export async function performRequest(
         uri: endpoint,
         body: buffer,
         encoding: null,
+        headers: {
+            'Content-Type': 'application/x-thrift',
+        },
         timeout,
         proxy
     });

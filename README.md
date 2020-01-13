@@ -20,3 +20,8 @@ cd thrift-api-ui
 yarn
 yarn start-dev
 ```
+
+## Build your own binary
+```
+yarn dist
+```

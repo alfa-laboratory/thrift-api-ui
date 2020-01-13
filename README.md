@@ -9,8 +9,8 @@ Download the [latest release](https://github.com/alfa-laboratory/thrift-api-ui/r
 
 ## Screenshots
 
-![main](https://user-images.githubusercontent.com/2098777/63263047-3615fa80-c290-11e9-8d22-c471221def62.png)
-![settings](https://user-images.githubusercontent.com/2098777/63263103-5b0a6d80-c290-11e9-8b81-7f14f2f84b32.png)
+![main](https://user-images.githubusercontent.com/2098777/72274758-cb4dcd00-363d-11ea-8977-45d30249cc5a.png)
+![settings](https://user-images.githubusercontent.com/2098777/72275446-00a6ea80-363f-11ea-8492-f45b8f56dda6.png)
 
 ## Development
 

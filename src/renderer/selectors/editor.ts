@@ -47,3 +47,7 @@ export const requestLoadingStateSelector = createSelector(
     activeTabSelector,
     tab => tab.requestLoadingState
 );
+export const modifiedServiceNameSelector = createSelector(
+    selectedMethodSelector,
+    selectedMethod => (selectedMethod && selectedMethod.modifiedServiceName) || ''
+);

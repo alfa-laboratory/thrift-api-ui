@@ -3,6 +3,11 @@ import { RootState } from '../reducers';
 
 export const settingsSelector = (state: RootState) => state.settings;
 
+export const multiplexerEnabledSelector = createSelector(
+    settingsSelector,
+    state => state.isMultiplexerEnabled
+);
+
 export const proxyUrlSelector = createSelector(
     settingsSelector,
     state => state.proxyUrl

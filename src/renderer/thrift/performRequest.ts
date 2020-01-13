@@ -4,6 +4,7 @@ import { jsonNormalizerFilter } from '../utils/thriftJsonNormalizer';
 
 interface PerformRequestParameters {
     method: ParsedMethod;
+    messageName: string;
     endpoint: string;
     requestMessage: string;
     timeout: number;
@@ -11,12 +12,13 @@ interface PerformRequestParameters {
 }
 
 export async function performRequest(
-    { method, endpoint, requestMessage, timeout, proxy }: PerformRequestParameters
+    { method, messageName, endpoint, requestMessage, timeout, proxy }: PerformRequestParameters
 ) {
     const params = JSON.parse(requestMessage);
     const message = new method.ArgumentsMessage({
         id: 0,
-        body: new method.Arguments(params)
+        body: new method.Arguments(params),
+        name: messageName
     });
 
     const result = method.argumentsMessageRW.byteLength(message);

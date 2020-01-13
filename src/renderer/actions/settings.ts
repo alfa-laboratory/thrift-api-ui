@@ -5,6 +5,7 @@ import { parseAllThriftFilesFromDirectory } from '../thrift/parseAllThriftFilesF
 import { endpointSelector, selectedMethodSelector } from '../selectors/editor';
 import { stringIsAValidUrl } from '../utils/isValidUrl';
 
+export const SET_MULTIPLEXER_ENABLED = '@settings/setMutiplexerEnabled';
 export const SET_THRIFT_SOURCE_PATH = '@settings/setThriftSourcePath';
 export const SET_THRIFT_SOURCE_PATH_SUCCESS = '@settings/setThriftSourcePathSuccess';
 export const SET_THRIFT_SOURCE_PATH_ERROR = '@settings/setThriftSourcePathError';
@@ -17,6 +18,12 @@ export const SHOW_SETTINGS = '@settings/showSettings';
 export const HIDE_SETTINGS = '@settings/hideSettings';
 
 const settingsAC = {
+    setMultiplexerEnabled(value: boolean) {
+        return {
+            type: SET_MULTIPLEXER_ENABLED,
+            value
+        } as const;
+    },
     setThriftSourcePath(path: string) {
         return {
             type: SET_THRIFT_SOURCE_PATH,
@@ -106,6 +113,7 @@ export function setThriftSource(path: string): SettingsThunkAction {
     }
 }
 
+export const setMultiplexerEnabled = settingsAC.setMultiplexerEnabled;
 export const setProxyUrl = settingsAC.setProxyUrl;
 export const setProxyEnabled = settingsAC.setProxyEnabled;
 export const setRequestTimeout = settingsAC.setRequestTimeout;

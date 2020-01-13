@@ -10,6 +10,8 @@ interface PerformRequestParameters {
     proxy?: string;
 }
 
+const stringify = (data: any) => JSON.stringify(data, jsonNormalizerFilter, 4);
+
 export async function performRequest(
     { method, endpoint, requestMessage, timeout, proxy }: PerformRequestParameters
 ) {
@@ -39,10 +41,10 @@ export async function performRequest(
     const res = await promise;
     const parsed = method.resultMessageRW.readFrom(res, 0);
     if (parsed.err) {
-        throw parsed.err;
+        throw stringify(parsed.err);
     }
     if (parsed.value.body.success) {
-        return JSON.stringify(parsed.value.body.success, jsonNormalizerFilter, 4);
+        return stringify(parsed.value.body.success);
     }
-    throw JSON.stringify(parsed.value.body.e || parsed.value.body, jsonNormalizerFilter, 4);
+    throw stringify(parsed.value.body.e || parsed.value.body);
 }

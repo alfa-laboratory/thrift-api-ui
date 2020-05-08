@@ -20,6 +20,7 @@ export async function performRequest(
     const message = new method.ArgumentsMessage({
         id: 0,
         body: new method.Arguments(params),
+        version: 1,
         name: messageName
     });
 

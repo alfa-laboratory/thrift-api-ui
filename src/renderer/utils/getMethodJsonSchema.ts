@@ -44,6 +44,7 @@ function getFieldSchema(fieldAst: FieldAst, thriftDefinitions: Record<string, Pr
             switch (fieldAst.valueType.baseType) {
                 case 'string':
                     return { type: 'string' };
+                case 'i16':
                 case 'i32':
                 case 'i64':
                 case 'double':

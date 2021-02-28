@@ -40,6 +40,7 @@ function getDefaultValue(fieldAst: FieldAst, thriftDefinitions: Record<string, P
             switch (fieldAst.valueType.baseType) {
                 case 'string':
                     return '';
+                case 'i16':
                 case 'i32':
                 case 'i64':
                 case 'double':

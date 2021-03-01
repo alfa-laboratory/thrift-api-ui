@@ -47,7 +47,7 @@ declare module 'thriftrw' {
 
     export interface BaseType {
         type: 'BaseType';
-        baseType: 'string' | 'i32' | 'i64' | 'double' | 'float' | 'bool' | 'void' | 'binary';
+        baseType: 'string' | 'i16' | 'i32' | 'i64' | 'double' | 'float' | 'bool' | 'void' | 'binary';
         annotations?: TypeAnnotation[] | {};
     }
 
